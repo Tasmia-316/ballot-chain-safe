@@ -1,4 +1,4 @@
-import { ChevronRight, User } from "lucide-react";
+import { BadgeCheck, ChevronRight } from "lucide-react";
 import type { Candidate } from "./data";
 
 export function CandidateCard({
@@ -8,37 +8,56 @@ export function CandidateCard({
   candidate: Candidate;
   onSelect: (c: Candidate) => void;
 }) {
+  const Symbol = candidate.symbol;
   return (
-    <article className="card-lift group relative overflow-hidden rounded-xl border border-border bg-card shadow-[var(--shadow-card)]">
-      {/* Top tinted band */}
-      <div
-        className={`relative h-28 bg-gradient-to-br ${candidate.accent} bg-navy/[0.02]`}
-      >
-        <div className="absolute inset-0 opacity-40 [background-image:linear-gradient(to_right,oklch(0.22_0.06_258/0.06)_1px,transparent_1px),linear-gradient(to_bottom,oklch(0.22_0.06_258/0.06)_1px,transparent_1px)] [background-size:18px_18px]" />
-        <div className="absolute -bottom-8 left-6 flex h-20 w-20 items-center justify-center rounded-full border-4 border-card bg-navy text-navy-foreground shadow-[var(--shadow-card)]">
-          <User className="h-10 w-10 text-white/80" strokeWidth={1.4} />
-        </div>
-        <div className="absolute right-4 top-4 rounded-md bg-white/85 px-2 py-1 backdrop-blur-sm">
-          <span className="font-mono text-[10px] font-semibold tracking-wider text-navy-deep">
-            {candidate.partyShort}
+    <article className="card-lift group relative overflow-hidden rounded-md border border-border bg-card shadow-[var(--shadow-card)]">
+      {/* Ballot header strip */}
+      <div className="flex items-center justify-between border-b border-border bg-muted/50 px-4 py-2">
+        <div className="flex items-center gap-2">
+          <span className="font-mono text-[10px] font-semibold tracking-[0.18em] text-muted-foreground">
+            BALLOT · SR {candidate.serial}
           </span>
+        </div>
+        <span className="inline-flex items-center gap-1 rounded-sm bg-emerald/10 px-1.5 py-0.5 text-[9.5px] font-semibold uppercase tracking-wider text-emerald">
+          <BadgeCheck className="h-3 w-3" />
+          Verified
+        </span>
+      </div>
+
+      <div className="flex gap-4 p-5">
+        {/* Election Symbol */}
+        <div className="flex flex-col items-center">
+          <div className="flex h-20 w-20 items-center justify-center rounded-full border-2 border-navy-deep/15 bg-background">
+            <Symbol className="h-10 w-10 text-navy-deep" strokeWidth={1.6} />
+          </div>
+          <p className="mt-1.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+            {candidate.symbolName}
+          </p>
+        </div>
+
+        {/* Candidate info */}
+        <div className="min-w-0 flex-1">
+          <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+            {candidate.partyShort}
+          </p>
+          <h3 className="mt-0.5 text-[16px] font-semibold leading-tight tracking-tight text-foreground">
+            {candidate.name}
+          </h3>
+          <p className="mt-0.5 text-[12.5px] text-slate-ink">
+            {candidate.party}
+          </p>
+          <p className="mt-2 text-[12px] leading-relaxed text-muted-foreground">
+            {candidate.tagline}
+          </p>
         </div>
       </div>
 
-      <div className="px-6 pb-6 pt-12">
-        <h3 className="text-[17px] font-semibold tracking-tight text-foreground">
-          {candidate.name}
-        </h3>
-        <p className="mt-0.5 text-sm text-muted-foreground">{candidate.party}</p>
-        <p className="mt-3 text-[12.5px] text-muted-foreground/90">
-          {candidate.tagline}
-        </p>
-
+      <div className="border-t border-border px-5 py-3">
         <button
           onClick={() => onSelect(candidate)}
-          className="mt-5 inline-flex w-full items-center justify-center gap-1.5 rounded-md bg-teal px-4 py-2.5 text-sm font-semibold text-teal-foreground transition-all duration-200 hover:bg-teal-glow hover:shadow-[var(--shadow-teal-glow)] focus:outline-none focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-offset-2"
+          className="inline-flex w-full items-center justify-center gap-1.5 rounded-md bg-emerald px-4 py-2.5 text-sm font-semibold text-emerald-foreground transition-colors duration-150 hover:bg-emerald/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald focus-visible:ring-offset-2"
         >
-          Select Candidate
+          Cast Vote for this Candidate
           <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
         </button>
       </div>

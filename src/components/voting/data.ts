@@ -1,10 +1,22 @@
+import {
+  TreePine,
+  Scale,
+  Moon,
+  Sun,
+  Wheat,
+  Anchor,
+  type LucideIcon,
+} from "lucide-react";
+
 export type Candidate = {
   id: string;
   name: string;
   party: string;
   partyShort: string;
   tagline: string;
-  accent: string; // tailwind color class for party badge
+  symbol: LucideIcon;
+  symbolName: string;
+  serial: string;
 };
 
 export const candidates: Candidate[] = [
@@ -14,7 +26,9 @@ export const candidates: Candidate[] = [
     party: "Progressive Alliance",
     partyShort: "PA",
     tagline: "Reform · Education · Innovation",
-    accent: "from-sky-500/20 to-sky-500/5",
+    symbol: TreePine,
+    symbolName: "Tree",
+    serial: "01",
   },
   {
     id: "c2",
@@ -22,7 +36,9 @@ export const candidates: Candidate[] = [
     party: "National Civic Front",
     partyShort: "NCF",
     tagline: "Civic Justice · Transparency",
-    accent: "from-emerald-500/20 to-emerald-500/5",
+    symbol: Scale,
+    symbolName: "Scale",
+    serial: "02",
   },
   {
     id: "c3",
@@ -30,7 +46,9 @@ export const candidates: Candidate[] = [
     party: "United Reform Party",
     partyShort: "URP",
     tagline: "Economy · Infrastructure",
-    accent: "from-amber-500/20 to-amber-500/5",
+    symbol: Anchor,
+    symbolName: "Anchor",
+    serial: "03",
   },
   {
     id: "c4",
@@ -38,7 +56,9 @@ export const candidates: Candidate[] = [
     party: "Democratic Coalition",
     partyShort: "DC",
     tagline: "Healthcare · Equality",
-    accent: "from-rose-500/20 to-rose-500/5",
+    symbol: Sun,
+    symbolName: "Sun",
+    serial: "04",
   },
   {
     id: "c5",
@@ -46,7 +66,9 @@ export const candidates: Candidate[] = [
     party: "Independent",
     partyShort: "IND",
     tagline: "Local Voice · Accountability",
-    accent: "from-violet-500/20 to-violet-500/5",
+    symbol: Wheat,
+    symbolName: "Wheat",
+    serial: "05",
   },
   {
     id: "c6",
@@ -54,6 +76,8 @@ export const candidates: Candidate[] = [
     party: "Future Republic Party",
     partyShort: "FRP",
     tagline: "Technology · Climate",
-    accent: "from-teal-500/20 to-teal-500/5",
+    symbol: Moon,
+    symbolName: "Crescent",
+    serial: "06",
   },
 ];
