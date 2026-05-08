@@ -35,49 +35,55 @@
   --color-emerald-foreground: var(--emerald-foreground);
   --color-success: var(--emerald);
   --color-slate-ink: var(--slate-ink);
+  --color-mint: var(--mint);
+  --color-mint-deep: var(--mint-deep);
 
   --font-sans: "Inter", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }
 
 :root {
-  --radius: 0.75rem;
+  --radius: 0.875rem;
 
   --background: oklch(1 0 0);
-  --foreground: oklch(0.18 0.04 258);
+  --foreground: oklch(0.18 0.04 200);
 
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.18 0.04 258);
+  --card-foreground: oklch(0.18 0.04 200);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.18 0.04 258);
+  --popover-foreground: oklch(0.18 0.04 200);
 
-  --primary: oklch(0.18 0.045 258);
+  --primary: oklch(0.42 0.09 175);
   --primary-foreground: oklch(1 0 0);
 
-  --secondary: oklch(0.97 0.005 250);
-  --secondary-foreground: oklch(0.18 0.045 258);
+  --secondary: oklch(0.96 0.025 175);
+  --secondary-foreground: oklch(0.22 0.06 195);
 
-  --muted: oklch(0.97 0.005 250);
-  --muted-foreground: oklch(0.50 0.015 255);
+  --muted: oklch(0.97 0.012 180);
+  --muted-foreground: oklch(0.48 0.018 200);
 
-  --accent: oklch(0.97 0.005 250);
-  --accent-foreground: oklch(0.18 0.045 258);
+  --accent: oklch(0.95 0.04 175);
+  --accent-foreground: oklch(0.22 0.06 195);
 
   --destructive: oklch(0.58 0.22 27);
   --destructive-foreground: oklch(1 0 0);
 
-  --border: oklch(0.93 0.005 250);
-  --input: oklch(0.93 0.005 250);
-  --ring: oklch(0.58 0.16 152);
+  --border: oklch(0.92 0.012 180);
+  --input: oklch(0.92 0.012 180);
+  --ring: oklch(0.55 0.14 165);
 
-  --navy-deep: oklch(0.17 0.045 258);
-  --navy: oklch(0.22 0.055 260);
+  --navy-deep: oklch(0.22 0.05 195);
+  --navy: oklch(0.28 0.05 200);
   --navy-foreground: oklch(1 0 0);
 
-  --emerald: oklch(0.60 0.16 152);
+  --emerald: oklch(0.58 0.15 158);
   --emerald-foreground: oklch(1 0 0);
 
-  --slate-ink: oklch(0.40 0.02 255);
+  --slate-ink: oklch(0.40 0.02 220);
+
+  /* Soft mint palette */
+  --mint: oklch(0.96 0.035 175);          /* #E0F2F1-ish */
+  --mint-deep: oklch(0.92 0.045 172);
 }
 
 @layer base {
@@ -93,44 +99,45 @@
 
 @layer utilities {
   .font-mono { font-family: var(--font-mono); }
+  .bg-mint { background-color: var(--mint); }
+  .bg-mint-deep { background-color: var(--mint-deep); }
+  .text-mint-ink { color: oklch(0.32 0.05 185); }
+  .shadow-soft { box-shadow: 0 1px 2px rgba(15,40,60,0.04), 0 8px 24px -12px rgba(15,40,60,0.10); }
+  .shadow-card { box-shadow: 0 1px 2px rgba(15,40,60,0.04), 0 12px 36px -16px rgba(15,40,60,0.12); }
 }
 
-@keyframes fade-in {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-@keyframes scale-in {
-  from { opacity: 0; transform: scale(0.96); }
-  to { opacity: 1; transform: scale(1); }
-}
-@keyframes overlay-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-@keyframes check-draw {
-  to { stroke-dashoffset: 0; }
-}
-@keyframes top-progress {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(0%); }
+/* Animations */
+@keyframes fade-in { from { opacity: 0; transform: translateY(6px);} to { opacity: 1; transform: translateY(0);} }
+@keyframes scale-in { from { opacity: 0; transform: scale(0.96);} to { opacity: 1; transform: scale(1);} }
+@keyframes overlay-in { from { opacity: 0;} to { opacity: 1;} }
+@keyframes check-draw { to { stroke-dashoffset: 0; } }
+@keyframes spin-slow { to { transform: rotate(360deg); } }
+@keyframes orbit { to { transform: rotate(360deg); } }
+@keyframes pulse-ring {
+  0% { transform: scale(0.85); opacity: 0.6; }
+  70% { transform: scale(1.4); opacity: 0; }
+  100% { transform: scale(1.4); opacity: 0; }
 }
 
-.animate-fade-in { animation: fade-in 0.4s ease-out both; }
+.animate-fade-in { animation: fade-in 0.5s ease-out both; }
 .animate-scale-in { animation: scale-in 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
 .animate-overlay-in { animation: overlay-in 0.2s ease-out both; }
+.animate-spin-slow { animation: spin-slow 3.5s linear infinite; }
 
 .check-draw {
   stroke-dasharray: 60;
   stroke-dashoffset: 60;
-  animation: check-draw 0.55s ease-out 0.15s forwards;
+  animation: check-draw 0.5s ease-out forwards;
 }
 
 .tile-hover {
   transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+              box-shadow 0.25s ease,
               border-color 0.2s ease,
               background-color 0.2s ease;
 }
 .tile-hover:hover {
-  transform: translateY(-2px);
-  border-color: var(--navy-deep);
+  transform: translateY(-3px);
+  border-color: oklch(0.78 0.06 170);
+  box-shadow: 0 1px 2px rgba(15,40,60,0.04), 0 18px 40px -18px rgba(20,80,80,0.18);
 }
