@@ -194,7 +194,7 @@ function Dashboard() {
                   Election Hub
                 </p>
                 <h2 className="mt-2 text-3xl font-semibold tracking-tight text-navy-deep md:text-4xl">
-                  Everything you need to vote informed.
+                  Official Election Information Hub
                 </h2>
               </div>
             </div>
