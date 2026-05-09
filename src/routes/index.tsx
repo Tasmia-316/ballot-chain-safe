@@ -232,7 +232,7 @@ function Dashboard() {
 
           {/* Candidates panel (revealed) */}
           {showCandidates && (
-            <section className="mx-auto max-w-7xl px-6 pb-24 md:px-10 animate-fade-in">
+            <section id="candidates-panel" className="mx-auto max-w-7xl px-6 pb-24 md:px-10 animate-fade-in">
               <div className="rounded-3xl border border-border bg-white p-8 shadow-soft md:p-10">
                 <div className="mb-8 flex flex-wrap items-end justify-between gap-3">
                   <div>
