@@ -202,11 +202,14 @@ function Dashboard() {
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {infoCards.map((c) => {
                 const Icon = c.icon;
-                const isCandidates = c.key === "candidates";
+                const handleClick = () => {
+                  if (c.key === "candidates") openCandidates();
+                  else if (c.key === "voter") setVoterProfileOpen(true);
+                };
                 return (
                   <button
                     key={c.key}
-                    onClick={() => isCandidates && setShowCandidates(true)}
+                    onClick={handleClick}
                     className="tile-hover group rounded-2xl border border-mint-deep bg-mint p-7 text-left"
                   >
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/80 ring-1 ring-mint-deep">
