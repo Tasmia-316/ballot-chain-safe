@@ -66,6 +66,20 @@ const infoCards = [
     body: "Polling stations, eligibility, and voter rights.",
     meta: "Find Station",
   },
+  {
+    key: "rolls",
+    icon: ClipboardList,
+    title: "Electoral Rolls",
+    body: "Search the official voter list by CNIC or constituency.",
+    meta: "120M+ Records",
+  },
+  {
+    key: "media",
+    icon: ImageIcon,
+    title: "Media Gallery",
+    body: "Press releases, official photos, and election briefings.",
+    meta: "View Archive",
+  },
 ] as const;
 
 function Dashboard() {
