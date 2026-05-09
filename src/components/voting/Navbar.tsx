@@ -3,10 +3,22 @@ import { ShieldCheck, Vote } from "lucide-react";
 export function Navbar({
   onCastVote,
   onHome,
+  onCandidates,
+  onVoterInfo,
 }: {
   onCastVote: () => void;
   onHome: () => void;
+  onCandidates: () => void;
+  onVoterInfo: () => void;
 }) {
+  const links: { label: string; onClick?: () => void }[] = [
+    { label: "Home", onClick: onHome },
+    { label: "Parties" },
+    { label: "Candidates", onClick: onCandidates },
+    { label: "Conduct" },
+    { label: "Voter Info", onClick: onVoterInfo },
+  ];
+
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-white/85 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 md:px-10">
@@ -25,10 +37,18 @@ export function Navbar({
         </button>
 
         <nav className="hidden items-center gap-7 md:flex">
-          {["Home", "Parties", "Candidates", "Conduct", "Voter Info"].map((l) => (
-            <a key={l} href="#" className="text-[13px] font-medium text-slate-ink hover:text-navy-deep transition-colors">
-              {l}
-            </a>
+          {links.map((l) => (
+            <button
+              key={l.label}
+              onClick={l.onClick}
+              className={`text-[13px] font-medium transition-colors ${
+                l.onClick
+                  ? "text-slate-ink hover:text-navy-deep"
+                  : "text-muted-foreground/70 cursor-default"
+              }`}
+            >
+              {l.label}
+            </button>
           ))}
         </nav>
 
