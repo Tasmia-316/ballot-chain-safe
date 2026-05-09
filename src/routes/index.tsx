@@ -10,12 +10,15 @@ import {
   ShieldCheck,
   Activity,
   X,
+  ClipboardList,
+  Image as ImageIcon,
 } from "lucide-react";
 import { Navbar } from "@/components/voting/Navbar";
 import { PakistanMap } from "@/components/voting/PakistanMap";
 import { CandidateCard } from "@/components/voting/CandidateCard";
 import { VoteModal } from "@/components/voting/VoteModal";
 import { CnicAuthModal } from "@/components/voting/CnicAuthModal";
+import { VoterProfileModal } from "@/components/voting/VoterProfileModal";
 import { candidates, type Candidate } from "@/components/voting/data";
 
 export const Route = createFileRoute("/")({
