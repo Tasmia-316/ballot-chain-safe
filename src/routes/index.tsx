@@ -320,6 +320,8 @@ function Dashboard() {
         <CandidateProfileModal candidate={profile} onClose={() => setProfile(null)} />
       )}
 
+      {voterProfileOpen && <VoterProfileModal onClose={() => setVoterProfileOpen(false)} />}
+
       {authOpen && (
         <CnicAuthModal onClose={() => setAuthOpen(false)} onVerified={handleVerified} />
       )}
