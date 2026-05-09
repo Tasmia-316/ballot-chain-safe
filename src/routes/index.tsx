@@ -10,12 +10,15 @@ import {
   ShieldCheck,
   Activity,
   X,
+  ClipboardList,
+  Image as ImageIcon,
 } from "lucide-react";
 import { Navbar } from "@/components/voting/Navbar";
 import { PakistanMap } from "@/components/voting/PakistanMap";
 import { CandidateCard } from "@/components/voting/CandidateCard";
 import { VoteModal } from "@/components/voting/VoteModal";
 import { CnicAuthModal } from "@/components/voting/CnicAuthModal";
+import { VoterProfileModal } from "@/components/voting/VoterProfileModal";
 import { candidates, type Candidate } from "@/components/voting/data";
 
 export const Route = createFileRoute("/")({
@@ -63,6 +66,20 @@ const infoCards = [
     body: "Polling stations, eligibility, and voter rights.",
     meta: "Find Station",
   },
+  {
+    key: "rolls",
+    icon: ClipboardList,
+    title: "Electoral Rolls",
+    body: "Search the official voter list by CNIC or constituency.",
+    meta: "120M+ Records",
+  },
+  {
+    key: "media",
+    icon: ImageIcon,
+    title: "Media Gallery",
+    body: "Press releases, official photos, and election briefings.",
+    meta: "View Archive",
+  },
 ] as const;
 
 function Dashboard() {
@@ -71,6 +88,7 @@ function Dashboard() {
   const [authOpen, setAuthOpen] = useState(false);
   const [showCandidates, setShowCandidates] = useState(false);
   const [profile, setProfile] = useState<Candidate | null>(null);
+  const [voterProfileOpen, setVoterProfileOpen] = useState(false);
 
   const startVoting = () => setAuthOpen(true);
   const handleVerified = () => {
@@ -79,9 +97,29 @@ function Dashboard() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const goHome = () => {
+    setView("home");
+    setShowCandidates(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const openCandidates = () => {
+    setView("home");
+    setShowCandidates(true);
+    setTimeout(() => {
+      const el = document.getElementById("candidates-panel");
+      el?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 50);
+  };
+
   return (
     <div className="min-h-screen bg-background">
-      <Navbar onCastVote={startVoting} onHome={() => setView("home")} />
+      <Navbar
+        onCastVote={startVoting}
+        onHome={goHome}
+        onCandidates={openCandidates}
+        onVoterInfo={() => setVoterProfileOpen(true)}
+      />
 
       {view === "home" && (
         <main>
@@ -156,19 +194,22 @@ function Dashboard() {
                   Election Hub
                 </p>
                 <h2 className="mt-2 text-3xl font-semibold tracking-tight text-navy-deep md:text-4xl">
-                  Everything you need to vote informed.
+                  Official Election Information Hub
                 </h2>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {infoCards.map((c) => {
                 const Icon = c.icon;
-                const isCandidates = c.key === "candidates";
+                const handleClick = () => {
+                  if (c.key === "candidates") openCandidates();
+                  else if (c.key === "voter") setVoterProfileOpen(true);
+                };
                 return (
                   <button
                     key={c.key}
-                    onClick={() => isCandidates && setShowCandidates(true)}
+                    onClick={handleClick}
                     className="tile-hover group rounded-2xl border border-mint-deep bg-mint p-7 text-left"
                   >
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/80 ring-1 ring-mint-deep">
@@ -194,7 +235,7 @@ function Dashboard() {
 
           {/* Candidates panel (revealed) */}
           {showCandidates && (
-            <section className="mx-auto max-w-7xl px-6 pb-24 md:px-10 animate-fade-in">
+            <section id="candidates-panel" className="mx-auto max-w-7xl px-6 pb-24 md:px-10 animate-fade-in">
               <div className="rounded-3xl border border-border bg-white p-8 shadow-soft md:p-10">
                 <div className="mb-8 flex flex-wrap items-end justify-between gap-3">
                   <div>
@@ -281,6 +322,8 @@ function Dashboard() {
       {profile && (
         <CandidateProfileModal candidate={profile} onClose={() => setProfile(null)} />
       )}
+
+      {voterProfileOpen && <VoterProfileModal onClose={() => setVoterProfileOpen(false)} />}
 
       {authOpen && (
         <CnicAuthModal onClose={() => setAuthOpen(false)} onVerified={handleVerified} />
