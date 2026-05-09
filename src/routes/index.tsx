@@ -88,6 +88,7 @@ function Dashboard() {
   const [authOpen, setAuthOpen] = useState(false);
   const [showCandidates, setShowCandidates] = useState(false);
   const [profile, setProfile] = useState<Candidate | null>(null);
+  const [voterProfileOpen, setVoterProfileOpen] = useState(false);
 
   const startVoting = () => setAuthOpen(true);
   const handleVerified = () => {
@@ -96,9 +97,29 @@ function Dashboard() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const goHome = () => {
+    setView("home");
+    setShowCandidates(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const openCandidates = () => {
+    setView("home");
+    setShowCandidates(true);
+    setTimeout(() => {
+      const el = document.getElementById("candidates-panel");
+      el?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 50);
+  };
+
   return (
     <div className="min-h-screen bg-background">
-      <Navbar onCastVote={startVoting} onHome={() => setView("home")} />
+      <Navbar
+        onCastVote={startVoting}
+        onHome={goHome}
+        onCandidates={openCandidates}
+        onVoterInfo={() => setVoterProfileOpen(true)}
+      />
 
       {view === "home" && (
         <main>
