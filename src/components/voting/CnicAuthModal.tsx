@@ -37,9 +37,9 @@ export function CnicAuthModal({
         setTimeout(onVerified, 900);
       } else {
         setStatus("error");
-        setMsg("Invalid CNIC or Voter Not Found");
+        setMsg("Voter record not found in National Roll");
       }
-    }, 700);
+    }, 900);
   };
 
   return (
@@ -80,7 +80,7 @@ export function CnicAuthModal({
                 setCnic(formatCnic(e.target.value));
                 if (status === "error") setStatus("idle");
               }}
-              placeholder="35202-1234567-1"
+              placeholder="00000-0000000-0"
               className="mt-1.5 w-full rounded-xl border border-input bg-background px-4 py-3 font-mono text-[15px] tracking-wider text-navy-deep outline-none transition focus:border-emerald focus:ring-2 focus:ring-emerald/25"
             />
           </label>
@@ -104,9 +104,6 @@ export function CnicAuthModal({
             {status === "verifying" ? "Verifying..." : status === "success" ? "Verified" : "Verify Identity"}
           </button>
 
-          <p className="mt-4 text-center text-[11px] text-muted-foreground">
-            Demo CNIC: <span className="font-mono">35202-1234567-1</span>
-          </p>
         </form>
       </div>
     </div>
