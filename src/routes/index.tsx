@@ -296,6 +296,10 @@ function Dashboard() {
           <footer className="border-t border-border bg-mint/40">
             <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-4 px-6 py-8 text-[12px] text-slate-ink md:flex-row md:items-center md:px-10">
               <p>© 2025 Election Commission · ChainVote Secure Portal</p>
+              <div className="inline-flex items-center gap-2 rounded-full border border-emerald/30 bg-emerald/10 px-3 py-1.5 text-[11.5px] font-medium text-emerald">
+                <ShieldCheck className="h-3.5 w-3.5" strokeWidth={2} />
+                Ledger Verified · Integrity Status OK
+              </div>
               <p className="font-mono text-[11px] text-muted-foreground">
                 Build v4.2.1 · Ledger height #19,482,103
               </p>
@@ -326,9 +330,35 @@ function Dashboard() {
             </div>
           </div>
 
+          {hasVoted && (
+            <div className="mb-8 flex items-start gap-3 rounded-2xl border border-emerald/30 bg-emerald/10 p-5">
+              <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-emerald" strokeWidth={2} />
+              <div className="min-w-0">
+                <p className="text-[14px] font-semibold text-navy-deep">
+                  Your vote has been securely recorded on the Blockchain.
+                </p>
+                <p className="mt-1 text-[12.5px] text-slate-ink">
+                  Double-voting is prevented by ledger immutability. Receipt hash:
+                </p>
+                <p className="mt-2 break-all rounded-lg bg-white/80 p-2.5 font-mono text-[11px] text-navy-deep">
+                  {voteHash}
+                </p>
+              </div>
+            </div>
+          )}
+
           <div className="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3">
             {candidates.map((c) => (
-              <CandidateCard key={c.id} candidate={c} onSelect={setSelected} />
+              <button
+                key={c.id}
+                disabled={hasVoted}
+                onClick={() => !hasVoted && setSelected(c)}
+                className="contents disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <div className={hasVoted ? "pointer-events-none opacity-50" : ""}>
+                  <CandidateCard candidate={c} onSelect={setSelected} />
+                </div>
+              </button>
             ))}
           </div>
         </main>
