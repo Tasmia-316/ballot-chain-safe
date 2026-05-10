@@ -16,7 +16,7 @@ export function CnicAuthModal({
   onVerified,
 }: {
   onClose: () => void;
-  onVerified: () => void;
+  onVerified: (cnic: string) => void;
 }) {
   const [cnic, setCnic] = useState("");
   const [status, setStatus] = useState<"idle" | "verifying" | "success" | "error">("idle");
