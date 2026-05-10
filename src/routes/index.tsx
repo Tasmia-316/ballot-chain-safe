@@ -158,9 +158,10 @@ function Dashboard() {
                 <div className="mt-8 flex flex-wrap items-center gap-3">
                   <button
                     onClick={startVoting}
-                    className="inline-flex items-center gap-2 rounded-full bg-emerald px-6 py-3 text-sm font-semibold text-emerald-foreground shadow-soft transition hover:bg-emerald/90"
+                    disabled={hasVoted}
+                    className="inline-flex items-center gap-2 rounded-full bg-emerald px-6 py-3 text-sm font-semibold text-emerald-foreground shadow-soft transition hover:bg-emerald/90 disabled:cursor-not-allowed disabled:opacity-60"
                   >
-                    <Vote className="h-4 w-4" /> Cast Your Vote
+                    <Vote className="h-4 w-4" /> {hasVoted ? "Vote Recorded" : "Cast Your Vote"}
                   </button>
                   <button
                     onClick={() => setShowCandidates(true)}
