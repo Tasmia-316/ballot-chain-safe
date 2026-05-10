@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from "react";
-import { Download, X, Check, Hash, Lock, ShieldCheck, Database, ArrowLeft } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import SHA256 from "crypto-js/sha256";
+import { Download, X, Check, Hash, Lock, ShieldCheck, Database, ArrowLeft, Copy } from "lucide-react";
 import type { Candidate } from "./data";
 
 type Phase = "confirm" | "processing" | "success";
@@ -15,16 +16,27 @@ const STEP_DURATION = 900;
 
 export function VoteModal({
   candidate,
+  userID,
   onClose,
   onReturn,
+  onCast,
 }: {
   candidate: Candidate;
+  userID: string;
   onClose: () => void;
   onReturn: () => void;
+  onCast: (voteHash: string) => void;
 }) {
   const [phase, setPhase] = useState<Phase>("confirm");
   const [stepIndex, setStepIndex] = useState(-1);
+  const [copied, setCopied] = useState(false);
   const timers = useRef<number[]>([]);
+
+  // SHA-256 hash of the vote payload — generated once when modal opens
+  const voteHash = useMemo(() => {
+    const payload = `${userID}|${candidate.id}|${candidate.name}|${Date.now()}`;
+    return SHA256(payload).toString();
+  }, [userID, candidate.id, candidate.name]);
 
   useEffect(() => () => timers.current.forEach((t) => window.clearTimeout(t)), []);
 
@@ -35,12 +47,21 @@ export function VoteModal({
       const t = window.setTimeout(() => setStepIndex(i + 1), (i + 1) * STEP_DURATION);
       timers.current.push(t);
     });
-    const done = window.setTimeout(() => setPhase("success"), STEPS.length * STEP_DURATION + 500);
+    const done = window.setTimeout(() => {
+      setPhase("success");
+      onCast(voteHash);
+    }, STEPS.length * STEP_DURATION + 500);
     timers.current.push(done);
   };
 
+  const copyHash = () => {
+    navigator.clipboard?.writeText(voteHash);
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 1500);
+  };
+
   const Symbol = candidate.symbol;
-  const txId = "0x7e3f9b21c8a04e6d5b1f9a8c2d4e7f10a1c3df";
+  const txId = "0x" + voteHash.slice(0, 38);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-overlay-in" role="dialog" aria-modal="true">
@@ -193,7 +214,24 @@ export function VoteModal({
               </p>
             </div>
 
-            <div className="mt-7 space-y-2 rounded-xl border border-border bg-mint/30 p-4">
+            <div className="mt-7 rounded-xl border border-mint-deep bg-mint/40 p-4">
+              <div className="flex items-center justify-between">
+                <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-mint-ink">
+                  SHA-256 Transaction Receipt
+                </p>
+                <button
+                  onClick={copyHash}
+                  className="inline-flex items-center gap-1 rounded-md bg-white/70 px-2 py-1 text-[11px] font-medium text-mint-ink hover:bg-white"
+                >
+                  <Copy className="h-3 w-3" /> {copied ? "Copied" : "Copy"}
+                </button>
+              </div>
+              <p className="mt-2 break-all rounded-lg bg-white/80 p-3 font-mono text-[11.5px] leading-relaxed text-navy-deep">
+                {voteHash}
+              </p>
+            </div>
+
+            <div className="mt-4 space-y-2 rounded-xl border border-border bg-mint/30 p-4">
               <Row label="Status" value="Confirmed" valueClass="text-emerald font-semibold" />
               <Row label="Transaction ID" value={txId} mono />
               <Row label="Block Number" value="#19,482,103" mono />

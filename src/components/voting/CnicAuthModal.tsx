@@ -16,7 +16,7 @@ export function CnicAuthModal({
   onVerified,
 }: {
   onClose: () => void;
-  onVerified: () => void;
+  onVerified: (cnic: string) => void;
 }) {
   const [cnic, setCnic] = useState("");
   const [status, setStatus] = useState<"idle" | "verifying" | "success" | "error">("idle");
@@ -34,10 +34,10 @@ export function CnicAuthModal({
       if (cnic === VALID_CNIC) {
         setStatus("success");
         setMsg("Identity Verified");
-        setTimeout(onVerified, 900);
+        setTimeout(() => onVerified(cnic), 900);
       } else {
         setStatus("error");
-        setMsg("Voter record not found in National Roll");
+        setMsg("Voter Not Registered");
       }
     }, 900);
   };

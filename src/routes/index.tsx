@@ -90,11 +90,27 @@ function Dashboard() {
   const [profile, setProfile] = useState<Candidate | null>(null);
   const [voterProfileOpen, setVoterProfileOpen] = useState(false);
 
-  const startVoting = () => setAuthOpen(true);
-  const handleVerified = () => {
+  // Student-style state names per spec
+  const [isLogged, setIsLogged] = useState(false);
+  const [userID, setUserID] = useState(""); // CNIC
+  const [hasVoted, setHasVoted] = useState(false);
+  const [voteHash, setVoteHash] = useState("");
+
+  const startVoting = () => {
+    if (hasVoted) return;
+    setAuthOpen(true);
+  };
+  const handleVerified = (cnic: string) => {
+    setIsLogged(true);
+    setUserID(cnic);
     setAuthOpen(false);
     setView("ballot");
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleVoteCast = (hash: string) => {
+    setHasVoted(true);
+    setVoteHash(hash);
   };
 
   const goHome = () => {
@@ -142,9 +158,10 @@ function Dashboard() {
                 <div className="mt-8 flex flex-wrap items-center gap-3">
                   <button
                     onClick={startVoting}
-                    className="inline-flex items-center gap-2 rounded-full bg-emerald px-6 py-3 text-sm font-semibold text-emerald-foreground shadow-soft transition hover:bg-emerald/90"
+                    disabled={hasVoted}
+                    className="inline-flex items-center gap-2 rounded-full bg-emerald px-6 py-3 text-sm font-semibold text-emerald-foreground shadow-soft transition hover:bg-emerald/90 disabled:cursor-not-allowed disabled:opacity-60"
                   >
-                    <Vote className="h-4 w-4" /> Cast Your Vote
+                    <Vote className="h-4 w-4" /> {hasVoted ? "Vote Recorded" : "Cast Your Vote"}
                   </button>
                   <button
                     onClick={() => setShowCandidates(true)}
@@ -248,9 +265,10 @@ function Dashboard() {
                   </div>
                   <button
                     onClick={startVoting}
-                    className="inline-flex items-center gap-2 rounded-full bg-navy-deep px-4 py-2.5 text-[13px] font-medium text-white transition hover:bg-navy"
+                    disabled={hasVoted}
+                    className="inline-flex items-center gap-2 rounded-full bg-navy-deep px-4 py-2.5 text-[13px] font-medium text-white transition hover:bg-navy disabled:cursor-not-allowed disabled:opacity-60"
                   >
-                    Proceed to Vote <ArrowRight className="h-4 w-4" />
+                    {hasVoted ? "Vote Recorded" : "Proceed to Vote"} <ArrowRight className="h-4 w-4" />
                   </button>
                 </div>
                 <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
@@ -280,6 +298,10 @@ function Dashboard() {
           <footer className="border-t border-border bg-mint/40">
             <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-4 px-6 py-8 text-[12px] text-slate-ink md:flex-row md:items-center md:px-10">
               <p>© 2025 Election Commission · ChainVote Secure Portal</p>
+              <div className="inline-flex items-center gap-2 rounded-full border border-emerald/30 bg-emerald/10 px-3 py-1.5 text-[11.5px] font-medium text-emerald">
+                <ShieldCheck className="h-3.5 w-3.5" strokeWidth={2} />
+                Ledger Verified · Integrity Status OK
+              </div>
               <p className="font-mono text-[11px] text-muted-foreground">
                 Build v4.2.1 · Ledger height #19,482,103
               </p>
@@ -310,7 +332,24 @@ function Dashboard() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3">
+          {hasVoted && (
+            <div className="mb-8 flex items-start gap-3 rounded-2xl border border-emerald/30 bg-emerald/10 p-5">
+              <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-emerald" strokeWidth={2} />
+              <div className="min-w-0">
+                <p className="text-[14px] font-semibold text-navy-deep">
+                  Your vote has been securely recorded on the Blockchain.
+                </p>
+                <p className="mt-1 text-[12.5px] text-slate-ink">
+                  Double-voting is prevented by ledger immutability. Receipt hash:
+                </p>
+                <p className="mt-2 break-all rounded-lg bg-white/80 p-2.5 font-mono text-[11px] text-navy-deep">
+                  {voteHash}
+                </p>
+              </div>
+            </div>
+          )}
+
+          <div className={`grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 ${hasVoted ? "pointer-events-none opacity-50" : ""}`}>
             {candidates.map((c) => (
               <CandidateCard key={c.id} candidate={c} onSelect={setSelected} />
             ))}
@@ -332,7 +371,9 @@ function Dashboard() {
       {selected && (
         <VoteModal
           candidate={selected}
+          userID={userID}
           onClose={() => setSelected(null)}
+          onCast={handleVoteCast}
           onReturn={() => {
             setSelected(null);
             setView("home");
