@@ -16,16 +16,27 @@ const STEP_DURATION = 900;
 
 export function VoteModal({
   candidate,
+  userID,
   onClose,
   onReturn,
+  onCast,
 }: {
   candidate: Candidate;
+  userID: string;
   onClose: () => void;
   onReturn: () => void;
+  onCast: (voteHash: string) => void;
 }) {
   const [phase, setPhase] = useState<Phase>("confirm");
   const [stepIndex, setStepIndex] = useState(-1);
+  const [copied, setCopied] = useState(false);
   const timers = useRef<number[]>([]);
+
+  // SHA-256 hash of the vote payload — generated once when modal opens
+  const voteHash = useMemo(() => {
+    const payload = `${userID}|${candidate.id}|${candidate.name}|${Date.now()}`;
+    return SHA256(payload).toString();
+  }, [userID, candidate.id, candidate.name]);
 
   useEffect(() => () => timers.current.forEach((t) => window.clearTimeout(t)), []);
 
@@ -36,12 +47,21 @@ export function VoteModal({
       const t = window.setTimeout(() => setStepIndex(i + 1), (i + 1) * STEP_DURATION);
       timers.current.push(t);
     });
-    const done = window.setTimeout(() => setPhase("success"), STEPS.length * STEP_DURATION + 500);
+    const done = window.setTimeout(() => {
+      setPhase("success");
+      onCast(voteHash);
+    }, STEPS.length * STEP_DURATION + 500);
     timers.current.push(done);
   };
 
+  const copyHash = () => {
+    navigator.clipboard?.writeText(voteHash);
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 1500);
+  };
+
   const Symbol = candidate.symbol;
-  const txId = "0x7e3f9b21c8a04e6d5b1f9a8c2d4e7f10a1c3df";
+  const txId = "0x" + voteHash.slice(0, 38);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-overlay-in" role="dialog" aria-modal="true">
