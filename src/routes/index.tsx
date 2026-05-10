@@ -265,9 +265,10 @@ function Dashboard() {
                   </div>
                   <button
                     onClick={startVoting}
-                    className="inline-flex items-center gap-2 rounded-full bg-navy-deep px-4 py-2.5 text-[13px] font-medium text-white transition hover:bg-navy"
+                    disabled={hasVoted}
+                    className="inline-flex items-center gap-2 rounded-full bg-navy-deep px-4 py-2.5 text-[13px] font-medium text-white transition hover:bg-navy disabled:cursor-not-allowed disabled:opacity-60"
                   >
-                    Proceed to Vote <ArrowRight className="h-4 w-4" />
+                    {hasVoted ? "Vote Recorded" : "Proceed to Vote"} <ArrowRight className="h-4 w-4" />
                   </button>
                 </div>
                 <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
