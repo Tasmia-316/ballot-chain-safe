@@ -214,11 +214,27 @@ export function VoteModal({
               </p>
             </div>
 
-            <div className="mt-7 space-y-2 rounded-xl border border-border bg-mint/30 p-4">
+            <div className="mt-7 rounded-xl border border-mint-deep bg-mint/40 p-4">
+              <div className="flex items-center justify-between">
+                <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-mint-ink">
+                  SHA-256 Transaction Receipt
+                </p>
+                <button
+                  onClick={copyHash}
+                  className="inline-flex items-center gap-1 rounded-md bg-white/70 px-2 py-1 text-[11px] font-medium text-mint-ink hover:bg-white"
+                >
+                  <Copy className="h-3 w-3" /> {copied ? "Copied" : "Copy"}
+                </button>
+              </div>
+              <p className="mt-2 break-all rounded-lg bg-white/80 p-3 font-mono text-[11.5px] leading-relaxed text-navy-deep">
+                {voteHash}
+              </p>
+            </div>
+
+            <div className="mt-4 space-y-2 rounded-xl border border-border bg-mint/30 p-4">
               <Row label="Status" value="Confirmed" valueClass="text-emerald font-semibold" />
               <Row label="Transaction ID" value={txId} mono />
               <Row label="Block Number" value="#19,482,103" mono />
-              <Row label="Network" value="ChainVote Mainnet" />
             </div>
 
             <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
