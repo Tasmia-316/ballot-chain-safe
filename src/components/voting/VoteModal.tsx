@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from "react";
-import { Download, X, Check, Hash, Lock, ShieldCheck, Database, ArrowLeft } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import SHA256 from "crypto-js/sha256";
+import { Download, X, Check, Hash, Lock, ShieldCheck, Database, ArrowLeft, Copy } from "lucide-react";
 import type { Candidate } from "./data";
 
 type Phase = "confirm" | "processing" | "success";
