@@ -347,18 +347,9 @@ function Dashboard() {
             </div>
           )}
 
-          <div className="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3">
+          <div className={`grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 ${hasVoted ? "pointer-events-none opacity-50" : ""}`}>
             {candidates.map((c) => (
-              <button
-                key={c.id}
-                disabled={hasVoted}
-                onClick={() => !hasVoted && setSelected(c)}
-                className="contents disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                <div className={hasVoted ? "pointer-events-none opacity-50" : ""}>
-                  <CandidateCard candidate={c} onSelect={setSelected} />
-                </div>
-              </button>
+              <CandidateCard key={c.id} candidate={c} onSelect={setSelected} />
             ))}
           </div>
         </main>
