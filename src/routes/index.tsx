@@ -369,7 +369,9 @@ function Dashboard() {
       {selected && (
         <VoteModal
           candidate={selected}
+          userID={userID}
           onClose={() => setSelected(null)}
+          onCast={handleVoteCast}
           onReturn={() => {
             setSelected(null);
             setView("home");
