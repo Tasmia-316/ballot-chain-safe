@@ -34,7 +34,7 @@ export function CnicAuthModal({
       if (cnic === VALID_CNIC) {
         setStatus("success");
         setMsg("Identity Verified");
-        setTimeout(onVerified, 900);
+        setTimeout(() => onVerified(cnic), 900);
       } else {
         setStatus("error");
         setMsg("Voter Not Registered");
