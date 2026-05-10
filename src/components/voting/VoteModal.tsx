@@ -235,6 +235,7 @@ export function VoteModal({
               <Row label="Status" value="Confirmed" valueClass="text-emerald font-semibold" />
               <Row label="Transaction ID" value={txId} mono />
               <Row label="Block Number" value="#19,482,103" mono />
+              <Row label="Network" value="ChainVote Mainnet" />
             </div>
 
             <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
