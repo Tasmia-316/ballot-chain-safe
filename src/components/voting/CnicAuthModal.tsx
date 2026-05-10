@@ -37,7 +37,7 @@ export function CnicAuthModal({
         setTimeout(onVerified, 900);
       } else {
         setStatus("error");
-        setMsg("Voter record not found in National Roll");
+        setMsg("Voter Not Registered");
       }
     }, 900);
   };
