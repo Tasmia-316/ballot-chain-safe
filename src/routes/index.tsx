@@ -90,11 +90,27 @@ function Dashboard() {
   const [profile, setProfile] = useState<Candidate | null>(null);
   const [voterProfileOpen, setVoterProfileOpen] = useState(false);
 
-  const startVoting = () => setAuthOpen(true);
-  const handleVerified = () => {
+  // Student-style state names per spec
+  const [isLogged, setIsLogged] = useState(false);
+  const [userID, setUserID] = useState(""); // CNIC
+  const [hasVoted, setHasVoted] = useState(false);
+  const [voteHash, setVoteHash] = useState("");
+
+  const startVoting = () => {
+    if (hasVoted) return;
+    setAuthOpen(true);
+  };
+  const handleVerified = (cnic: string) => {
+    setIsLogged(true);
+    setUserID(cnic);
     setAuthOpen(false);
     setView("ballot");
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleVoteCast = (hash: string) => {
+    setHasVoted(true);
+    setVoteHash(hash);
   };
 
   const goHome = () => {
